@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "413298419218",
+    "firebase_url": "https://gankedbyhousing.firebaseio.com",
+    "project_id": "gankedbyhousing",
+    "storage_bucket": "gankedbyhousing.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:413298419218:android:197a44db12359a6ed6dacb",
+        "android_client_info": {
+          "package_name": "com.example.gankedbyhousing"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "413298419218-k8hjiel64156uiofkdmmfmgk52nfu7fv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.gankedbyhousing",
+            "certificate_hash": "905b66aa3ea44d418312299f1334fc5a347efd54"
+          }
+        },
+        {
+          "client_id": "413298419218-aip3f71v0i6epjp8rcq0frmsg7d1g721.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB1o2VnpDnCh5MgDoFnBWCvylc6zpC1iUE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "413298419218-aip3f71v0i6epjp8rcq0frmsg7d1g721.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
