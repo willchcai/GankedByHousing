@@ -32,7 +32,7 @@ public class LoginActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         if(mAuth.getCurrentUser() != null){
-            toHomeActivity();
+            toMainActivity();
         }
 
         loginButton = findViewById(R.id.loginButton);
@@ -83,41 +83,16 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private boolean validateForm(String mEmail, String mPassword){
-        boolean valid = true;
 
-        if(mEmail.isEmpty()){
-            email.setError("A valid email address is required.");
-            valid = false;
-        }else{
-            email.setError(null);
-        }
-
-
-        if(mPassword.isEmpty()){
-            password.setError("A valid password is required.");
-            valid = false;
-        }else{
-            password.setError(null);
-        }
-
-        return valid;
-    }
 
     private void toSignUpActivity(){
         Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
         startActivity(intent);
     }
 
-    private void toHomeActivity(){
+    private void toMainActivity(){
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(intent);
     }
 
-    public void logout(View view){
-        FirebaseAuth.getInstance().signOut();
-        Intent toActivity = new Intent(getApplicationContext(), MainActivity.class);
-        startActivity(toActivity);
-
-    }
 }
