@@ -26,6 +26,9 @@ public class MainActivity extends AppCompatActivity {
     private Button viewListing;
     private Button editProfile;
     private TextView welcome;
+    private TextView profName;
+    private TextView profPhone;
+    private TextView profEmail;
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore fStore;
@@ -41,6 +44,9 @@ public class MainActivity extends AppCompatActivity {
         viewListing = findViewById(R.id.viewListing);
         editProfile = findViewById(R.id.editProfile);
         welcome = findViewById(R.id.welcome);
+        profName = findViewById(R.id.profName);
+        profEmail = findViewById(R.id.profEmail);
+        profPhone = findViewById(R.id.profPhone);
 
         mAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
@@ -55,7 +61,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
                 String mName = documentSnapshot.getString("name");
+                String mPhone = documentSnapshot.getString("phone");
+                String mEmail = documentSnapshot.getString("email");
+
                 welcome.setText("Welcome, " + mName + "!");
+                profName.setText(mName);
+                profPhone.setText(mPhone);
+                profEmail.setText(mEmail);
+
             }
         });
 
