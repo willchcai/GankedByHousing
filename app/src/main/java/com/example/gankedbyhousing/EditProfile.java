@@ -1,6 +1,5 @@
 package com.example.gankedbyhousing;
 
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -29,17 +28,18 @@ import com.squareup.picasso.Picasso;
 
 import javax.annotation.Nullable;
 
-public class MainActivity extends AppCompatActivity implements PopUpDialog.PopUpDialogListener {
+public class EditProfile extends AppCompatActivity implements PopUpDialog.PopUpDialogListener {
 
-    private Button logoutBtn;
-    private Button editProfile;
-    private Button viewListing;
+    private Button backBtn;
+    private Button editLocation;
     private Button changePass;
     private TextView welcome;
     private TextView profName;
     private TextView profPhone;
     private TextView profEmail;
+    private TextView profLocation;
     private ImageView profPic;
+    private String editMode;
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore fStore;
@@ -50,17 +50,17 @@ public class MainActivity extends AppCompatActivity implements PopUpDialog.PopUp
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.edit_profile);
 
-        logoutBtn = findViewById(R.id.backButton);
-        editProfile = findViewById(R.id.editLocation);
-        viewListing = findViewById(R.id.editPhone);
+        backBtn = findViewById(R.id.backButton);
+        editLocation = findViewById(R.id.editLocation);
         changePass = findViewById(R.id.changePass);
         welcome = findViewById(R.id.welcome1);
         profName = findViewById(R.id.profName1);
         profEmail = findViewById(R.id.profEmail1);
         profPhone = findViewById(R.id.profPhone1);
         profPic = findViewById(R.id.profPic1);
+        profLocation = findViewById(R.id.profLocation);
 
         mAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements PopUpDialog.PopUp
 
         userID = mAuth.getCurrentUser().getUid();
 
-       //Restore profile picture, if there is any
+        //Restore profile picture, if there is any
         StorageReference profRef = mStorageRef.child("profile.jpg" + userID);
         profRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements PopUpDialog.PopUp
                 String mPhone = documentSnapshot.getString("phone");
                 String mEmail = documentSnapshot.getString("email");
 
-                welcome.setText("Welcome, " + mName + "!");
+                welcome.setText("Edit Your Profile");
                 profName.setText(mName);
                 profPhone.setText(mPhone);
                 profEmail.setText(mEmail);
@@ -96,28 +96,28 @@ public class MainActivity extends AppCompatActivity implements PopUpDialog.PopUp
         });
 
 
-        editProfile.setOnClickListener(new View.OnClickListener() {
+        backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent toEditProfile = new Intent(MainActivity.this, EditProfile.class);
-                startActivity(toEditProfile);
+                Intent toMainActivity = new Intent(EditProfile.this, MainActivity.class);
+                startActivity(toMainActivity);
             }
         });
 
-
-        logoutBtn.setOnClickListener(new View.OnClickListener() {
+        editLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent toLoginActivity = new Intent(MainActivity.this, LoginActivity.class);
-                mAuth.getInstance().signOut();
-                startActivity(toLoginActivity);
+                editMode = "changeLocation";
+                openDialog();
             }
         });
+
 
 
         changePass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                editMode = "changePass";
                 openDialog();
             }
         });
@@ -126,7 +126,6 @@ public class MainActivity extends AppCompatActivity implements PopUpDialog.PopUp
             @Override
             public void onClick(View v) {
                 Intent toGallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                //toGallery.setType("image/*");
                 startActivityForResult(toGallery,100);
             }
         });
@@ -135,7 +134,7 @@ public class MainActivity extends AppCompatActivity implements PopUpDialog.PopUp
 
 
     public void openDialog() {
-        PopUpDialog popup = new PopUpDialog("changePass");
+        PopUpDialog popup = new PopUpDialog(editMode);
         popup.show(getSupportFragmentManager(), "changePass");
     }
 
@@ -150,10 +149,10 @@ public class MainActivity extends AppCompatActivity implements PopUpDialog.PopUp
         }
     }
 
-    @Override
-    public void applyLocation(String newLoc) {
-
+    public void applyLocation(String newLoc){
+        profLocation.setText(newLoc);
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @androidx.annotation.Nullable Intent data) {
@@ -176,13 +175,14 @@ public class MainActivity extends AppCompatActivity implements PopUpDialog.PopUp
         fileRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Toast.makeText(MainActivity.this, "Profile image updated", Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditProfile.this, "Profile image updated", Toast.LENGTH_SHORT).show();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(MainActivity.this, "Profile image failed to update. Please try again.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditProfile.this, "Profile image failed to update. Please try again.", Toast.LENGTH_SHORT).show();
             }
         });
     }
 }
+

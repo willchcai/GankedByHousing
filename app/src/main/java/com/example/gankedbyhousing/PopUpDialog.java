@@ -24,7 +24,14 @@ public class PopUpDialog extends AppCompatDialogFragment {
 
     private TextView newPass;
     private TextView confirmPass;
+    private TextView newLocation;
     private PopUpDialogListener listener;
+    private String editMode;
+
+    public PopUpDialog(String edit) {
+        this.editMode = edit;
+    }
+
 
     @NonNull
     @Override
@@ -32,27 +39,53 @@ public class PopUpDialog extends AppCompatDialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        View view = inflater.inflate(R.layout.open_dialog, null);
 
-        builder.setView(view)
-                .setTitle("Change Password")
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
 
-                    }
-                })
-                .setPositiveButton("Save", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        String updatedPass = newPass.getText().toString();
-                        String mConfirmPass = confirmPass.getText().toString();
-                        listener.applyText(mConfirmPass, updatedPass);
-                    }
-                });
+        if(editMode.equals("changePass")) {
+            View view = inflater.inflate(R.layout.open_dialog, null);
+            builder.setView(view)
+                    .setTitle("Change Password")
+                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
 
-        newPass = view.findViewById(R.id.newPass);
-        confirmPass = view.findViewById(R.id.confirmPass);
+                        }
+                    })
+                    .setPositiveButton("Save", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            String updatedPass = newPass.getText().toString();
+                            String mConfirmPass = confirmPass.getText().toString();
+                            listener.applyPass(mConfirmPass, updatedPass);
+                        }
+                    });
+
+            newPass = view.findViewById(R.id.newPass);
+            confirmPass = view.findViewById(R.id.confirmPass);
+
+        }else{
+            View view = inflater.inflate(R.layout.open_dialog_loca, null);
+            builder.setView(view)
+                    .setTitle("Change Location")
+                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    })
+                    .setPositiveButton("Save", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            String editLoc = newLocation.getText().toString();
+                            listener.applyLocation(editLoc);
+                        }
+                    });
+
+
+            newLocation = view.findViewById(R.id.newLocation);
+
+
+        }
 
         return builder.create();
     }
@@ -69,7 +102,8 @@ public class PopUpDialog extends AppCompatDialogFragment {
     }
 
     public interface PopUpDialogListener{
-        void applyText(String newPass, String confirmPass);
+        void applyPass(String newPass, String confirmPass);
+        void applyLocation(String newLoc);
     }
 }
 
