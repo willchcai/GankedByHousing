@@ -109,6 +109,14 @@ public class MainActivity extends AppCompatActivity implements PopUpDialog.PopUp
             }
         });
 
+        viewListing.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent toViewListingsActivity = new Intent(MainActivity.this, ViewListingsActivity.class);
+                startActivity(toViewListingsActivity);
+            }
+        });
+
 
         changePass.setOnClickListener(new View.OnClickListener() {
             @Override
