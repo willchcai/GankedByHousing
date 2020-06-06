@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -18,28 +19,25 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
-import javax.annotation.Nullable;
 
-public class EditProfile extends AppCompatActivity implements PopUpDialog.PopUpDialogListener {
 
-    private Button backBtn;
-    private Button editLocation;
-    private Button changePass;
-    private TextView welcome;
-    private TextView profName;
-    private TextView profPhone;
-    private TextView profEmail;
-    private TextView profLocation;
-    private ImageView profPic;
-    private String editMode;
+import de.hdodenhof.circleimageview.CircleImageView;
+
+public class ProfileActivity extends AppCompatActivity{
+
+    private ImageView homeBtn;
+    private ImageView editEmail, editLocation, editPhone;
+
+    private TextView email, phone, location, profName, profLocation;
+
+    private CircleImageView profPic;
+    private Button logout;
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore fStore;
@@ -47,27 +45,31 @@ public class EditProfile extends AppCompatActivity implements PopUpDialog.PopUpD
 
     String userID;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.edit_profile);
+        setContentView(R.layout.activity_profile);
 
-        backBtn = findViewById(R.id.backButton);
+        homeBtn = findViewById(R.id.home);
+        profName = findViewById(R.id.profName);
+        profPic = findViewById(R.id.profPic);
         editLocation = findViewById(R.id.editLocation);
-        changePass = findViewById(R.id.changePass);
-        welcome = findViewById(R.id.welcome1);
-        profName = findViewById(R.id.profName1);
-        profEmail = findViewById(R.id.profEmail1);
-        profPhone = findViewById(R.id.profPhone1);
-        profPic = findViewById(R.id.profPic1);
-        profLocation = findViewById(R.id.profLocation);
+        editPhone = findViewById(R.id.editPhone);
+        email = findViewById(R.id.UserEmail);
+        phone = findViewById(R.id.UserPhone);
+        location = findViewById(R.id.UserLocation);
+        profLocation = findViewById(R.id.topLocation);
+        logout = findViewById(R.id.logout);
 
         mAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
         mStorageRef = FirebaseStorage.getInstance().getReference();
 
-
         userID = mAuth.getCurrentUser().getUid();
+
+
+
 
         //Restore profile picture, if there is any
         StorageReference profRef = mStorageRef.child("profile.jpg" + userID);
@@ -78,49 +80,63 @@ public class EditProfile extends AppCompatActivity implements PopUpDialog.PopUpD
             }
         });
 
+
+
         //Retrieve user information
         DocumentReference docRef = fStore.collection("Users").document(userID);
-        docRef.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
-                String mName = documentSnapshot.getString("name");
-                String mPhone = documentSnapshot.getString("phone");
-                String mEmail = documentSnapshot.getString("email");
+        docRef.get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if(documentSnapshot.exists()){
+                            String mName = documentSnapshot.getString("name");
+                            String mPhone = documentSnapshot.getString("phone");
+                            String mEmail = documentSnapshot.getString("email");
+                            String mLocation = documentSnapshot.getString("location");
 
-                welcome.setText("Edit Your Profile");
-                profName.setText(mName);
-                profPhone.setText(mPhone);
-                profEmail.setText(mEmail);
+                            profName.setText(mName);
+                            email.setText(mEmail);
+                            location.setText(mLocation);
+                            phone.setText(mPhone);
+                            profLocation.setText(mLocation);
 
-            }
-        });
+                        }
+                    }
+                });
 
 
-        backBtn.setOnClickListener(new View.OnClickListener() {
+
+
+
+        //OnClickListeners
+
+        homeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent toMainActivity = new Intent(EditProfile.this, MainActivity.class);
+                Intent toMainActivity = new Intent(ProfileActivity.this, MainActivity.class);
                 startActivity(toMainActivity);
             }
         });
 
+
+
         editLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                editMode = "changeLocation";
-                openDialog();
+                Intent updateLocation = new Intent(ProfileActivity.this, updateLocationActivity.class);
+                startActivity(updateLocation);
             }
         });
 
 
-
-        changePass.setOnClickListener(new View.OnClickListener() {
+        editPhone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                editMode = "changePass";
-                openDialog();
+                Intent updatePhone = new Intent(ProfileActivity.this, updatePhoneActivity.class);
+                startActivity(updatePhone);
             }
         });
+
 
         profPic.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -129,29 +145,20 @@ public class EditProfile extends AppCompatActivity implements PopUpDialog.PopUpD
                 startActivityForResult(toGallery,100);
             }
         });
+
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent toLoginActivity = new Intent(ProfileActivity.this, LoginActivity.class);
+                mAuth.getInstance().signOut();
+                startActivity(toLoginActivity);
+            }
+        });
     }
 
 
 
-    public void openDialog() {
-        PopUpDialog popup = new PopUpDialog(editMode);
-        popup.show(getSupportFragmentManager(), "changePass");
-    }
 
-    @Override
-    public void applyPass(String newPass, String confirmPass) {
-        if(newPass.equals(confirmPass)) {
-            mAuth.getCurrentUser().updatePassword(newPass);
-            Toast.makeText(getApplicationContext(), "Password Updated Successfully.", Toast.LENGTH_SHORT).show();
-        }else{
-            Toast.makeText(getApplicationContext(), "Entered passwords do not match.", Toast.LENGTH_SHORT).show();
-
-        }
-    }
-
-    public void applyLocation(String newLoc){
-        profLocation.setText(newLoc);
-    }
 
 
     @Override
@@ -175,12 +182,12 @@ public class EditProfile extends AppCompatActivity implements PopUpDialog.PopUpD
         fileRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Toast.makeText(EditProfile.this, "Profile image updated", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ProfileActivity.this, "Profile image updated", Toast.LENGTH_SHORT).show();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(EditProfile.this, "Profile image failed to update. Please try again.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ProfileActivity.this, "Profile image failed to update. Please try again.", Toast.LENGTH_SHORT).show();
             }
         });
     }

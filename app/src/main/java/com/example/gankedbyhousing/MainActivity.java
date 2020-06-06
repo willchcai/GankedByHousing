@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements PopUpDialog.PopUp
         editProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent toEditProfile = new Intent(MainActivity.this, EditProfile.class);
+                Intent toEditProfile = new Intent(MainActivity.this, ProfileActivity.class);
                 startActivity(toEditProfile);
             }
         });

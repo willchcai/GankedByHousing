@@ -29,6 +29,7 @@ public class SignUpActivity extends AppCompatActivity {
     private TextView toLogin;
     private TextView name;
     private TextView phoneNum;
+    private TextView location;
     private Button register;
     private FirebaseAuth mAuth;
     private FirebaseFirestore fStore;
@@ -46,6 +47,7 @@ public class SignUpActivity extends AppCompatActivity {
         register = findViewById(R.id.regButton);
         name = findViewById(R.id.SUnameText);
         phoneNum = findViewById(R.id.SUphoneText);
+        location = findViewById(R.id.SUlocation);
 
         mAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
@@ -67,6 +69,7 @@ public class SignUpActivity extends AppCompatActivity {
                 final String mPass = password.getText().toString();
                 final String mName = name.getText().toString();
                 final String mPhoneNum = phoneNum.getText().toString();
+                final String mLocation = location.getText().toString();
 
                 if(mEmail.isEmpty()){
                     email.setError("A valid email is required.");
@@ -95,6 +98,7 @@ public class SignUpActivity extends AppCompatActivity {
                             user.put("name", mName);
                             user.put("email", mEmail);
                             user.put("phone", mPhoneNum);
+                            user.put("location", mLocation);
                             docRef.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
