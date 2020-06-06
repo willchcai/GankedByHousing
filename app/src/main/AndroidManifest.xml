@@ -9,7 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".updatePhoneActivity"></activity>
+        <activity android:name=".ViewListings"/>
+        <activity android:name=".MakeListings"/>
+        <activity android:name=".myListings"/>
+        <activity android:name=".notificationsActivity"/>
+        <activity android:name=".updatePhoneActivity" />
         <activity android:name=".updateLocationActivity" />
         <activity android:name=".updatePassActivity" />
         <activity android:name=".SettingsActivity" />

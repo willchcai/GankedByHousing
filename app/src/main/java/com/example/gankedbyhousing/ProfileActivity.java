@@ -77,6 +77,7 @@ public class ProfileActivity extends AppCompatActivity{
 
 
 
+
         //Restore profile picture, if there is any
         StorageReference profRef = mStorageRef.child("profile.jpg" + userID);
         profRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -160,6 +161,44 @@ public class ProfileActivity extends AppCompatActivity{
                 startActivity(toLoginActivity);
             }
         });
+
+
+
+
+
+        //Bottom Navigation Bar
+
+        BottomNavigationView navbar = findViewById(R.id.navbar);
+
+        navbar.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                switch (menuItem.getItemId()){
+                    case R.id.nav_profile:
+                        break;
+                    case R.id.my_listings:
+                        Intent myListings = new Intent(ProfileActivity.this, myListings.class);
+                        startActivity(myListings);
+                        break;
+                    case R.id.listings:
+                        Intent viewListings = new Intent(ProfileActivity.this, ViewListings.class);
+                        startActivity(viewListings);
+                        break;
+                    case R.id.notifications:
+                        Intent toNotifications = new Intent(ProfileActivity.this, notificationsActivity.class);
+                        startActivity(toNotifications);
+                        break;
+                    case R.id.make_listing:
+                        Intent toUpload = new Intent(ProfileActivity.this, MakeListings.class);
+                        startActivity(toUpload);
+                        break;
+
+                }
+
+                return true;
+            }
+        });
+
     }
 
 
