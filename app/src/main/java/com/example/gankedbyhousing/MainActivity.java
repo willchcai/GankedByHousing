@@ -29,21 +29,12 @@ import com.squareup.picasso.Picasso;
 
 import javax.annotation.Nullable;
 
-public class MainActivity extends AppCompatActivity implements PopUpDialog.PopUpDialogListener {
+public class MainActivity extends AppCompatActivity {
 
-    private Button logoutBtn;
-    private Button editProfile;
-    private Button viewListing;
-    private Button changePass;
-    private TextView welcome;
-    private TextView profName;
-    private TextView profPhone;
-    private TextView profEmail;
-    private ImageView profPic;
 
     private FirebaseAuth mAuth;
-    private FirebaseFirestore fStore;
-    private StorageReference mStorageRef;
+    private Button editProfile;
+
 
     String userID;
 
@@ -52,137 +43,22 @@ public class MainActivity extends AppCompatActivity implements PopUpDialog.PopUp
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        logoutBtn = findViewById(R.id.backButton);
-        editProfile = findViewById(R.id.editLocation);
-        viewListing = findViewById(R.id.editPhone);
-        changePass = findViewById(R.id.changePass);
-        welcome = findViewById(R.id.welcome1);
-        profName = findViewById(R.id.profName1);
-        profEmail = findViewById(R.id.profEmail1);
-        profPhone = findViewById(R.id.profPhone1);
-        profPic = findViewById(R.id.profPic1);
-
-        mAuth = FirebaseAuth.getInstance();
-        fStore = FirebaseFirestore.getInstance();
-        mStorageRef = FirebaseStorage.getInstance().getReference();
-
-
-        userID = mAuth.getCurrentUser().getUid();
-
-       //Restore profile picture, if there is any
-        StorageReference profRef = mStorageRef.child("profile.jpg" + userID);
-        profRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                Picasso.get().load(uri).into(profPic);
-            }
-        });
-
-        //Retrieve user information
-        DocumentReference docRef = fStore.collection("Users").document(userID);
-        docRef.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
-                String mName = documentSnapshot.getString("name");
-                String mPhone = documentSnapshot.getString("phone");
-                String mEmail = documentSnapshot.getString("email");
-
-                welcome.setText("Welcome, " + mName + "!");
-                profName.setText(mName);
-                profPhone.setText(mPhone);
-                profEmail.setText(mEmail);
-
-            }
-        });
-
+        editProfile = findViewById(R.id.editProfile);
 
         editProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent toEditProfile = new Intent(MainActivity.this, ProfileActivity.class);
-                startActivity(toEditProfile);
+                Intent toProfile = new Intent(MainActivity.this, ProfileActivity.class);
+                startActivity(toProfile);
             }
         });
 
 
-        logoutBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent toLoginActivity = new Intent(MainActivity.this, LoginActivity.class);
-                mAuth.getInstance().signOut();
-                startActivity(toLoginActivity);
-            }
-        });
-
-
-        changePass.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openDialog();
-            }
-        });
-
-        profPic.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent toGallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                //toGallery.setType("image/*");
-                startActivityForResult(toGallery,100);
-            }
-        });
-    }
+        mAuth = FirebaseAuth.getInstance();
 
 
 
-    public void openDialog() {
-        PopUpDialog popup = new PopUpDialog("changePass");
-        popup.show(getSupportFragmentManager(), "changePass");
-    }
+        userID = mAuth.getCurrentUser().getUid();
 
-    @Override
-    public void applyPass(String newPass, String confirmPass) {
-        if(newPass.equals(confirmPass)) {
-            mAuth.getCurrentUser().updatePassword(newPass);
-            Toast.makeText(getApplicationContext(), "Password Updated Successfully.", Toast.LENGTH_SHORT).show();
-        }else{
-            Toast.makeText(getApplicationContext(), "Entered passwords do not match.", Toast.LENGTH_SHORT).show();
-
-        }
-    }
-
-    @Override
-    public void applyLocation(String newLoc) {
-
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @androidx.annotation.Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if(requestCode == 100 && resultCode == RESULT_OK){
-            Uri imageUri = data.getData();
-            Picasso.get().load(imageUri).into(profPic);
-
-            uploadImageToFirebase(imageUri);
-
-        }
-
-    }
-
-    public void uploadImageToFirebase(Uri imageUri){
-        //upload image to firebase storage
-
-        StorageReference fileRef = mStorageRef.child("profile.jpg" + userID);
-        fileRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Toast.makeText(MainActivity.this, "Profile image updated", Toast.LENGTH_SHORT).show();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(MainActivity.this, "Profile image failed to update. Please try again.", Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 }
