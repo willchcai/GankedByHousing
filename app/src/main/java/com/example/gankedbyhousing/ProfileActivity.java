@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -34,8 +35,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileActivity extends AppCompatActivity{
 
-    private ImageView homeBtn;
-    private ImageView editEmail, editLocation, editPhone;
+    private ImageView editLocation, editPhone;
 
     private TextView email, phone, location, profName, profLocation;
 
@@ -56,8 +56,6 @@ public class ProfileActivity extends AppCompatActivity{
 
 
 
-
-        homeBtn = findViewById(R.id.home);
         profName = findViewById(R.id.profName);
         profPic = findViewById(R.id.profPic);
         editLocation = findViewById(R.id.editLocation);
@@ -117,15 +115,6 @@ public class ProfileActivity extends AppCompatActivity{
 
         //OnClickListeners
 
-        homeBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent toMainActivity = new Intent(ProfileActivity.this, MainActivity.class);
-                startActivity(toMainActivity);
-            }
-        });
-
-
 
         editLocation.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -169,6 +158,9 @@ public class ProfileActivity extends AppCompatActivity{
         //Bottom Navigation Bar
 
         BottomNavigationView navbar = findViewById(R.id.navbar);
+        Menu menu = navbar.getMenu();
+        MenuItem menuItem = menu.getItem(2);
+        menuItem.setChecked(true);
 
         navbar.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -181,7 +173,7 @@ public class ProfileActivity extends AppCompatActivity{
                         startActivity(myListings);
                         break;
                     case R.id.listings:
-                        Intent viewListings = new Intent(ProfileActivity.this, ViewListings.class);
+                        Intent viewListings = new Intent(ProfileActivity.this, MainActivity.class);
                         startActivity(viewListings);
                         break;
                     case R.id.notifications:

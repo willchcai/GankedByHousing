@@ -7,21 +7,21 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/editProfile"
+
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:text="edit profile" >
+        android:text="View Listings/MainActivity"
+        android:gravity="center"
+        android:textSize="36sp" />
 
-    </Button>
-
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
+    <include
+        layout="@layout/item_bottom_navigation"
+        android:id="@+id/navbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/navbar"
-        app:menu="@menu/bottom_navigation"
-        android:layout_alignParentBottom="true" />
+        android:layout_gravity="bottom"
+        android:layout_alignParentBottom="true"/>
 
 </RelativeLayout>

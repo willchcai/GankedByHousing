@@ -2,6 +2,7 @@ package com.example.gankedbyhousing;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
@@ -24,6 +25,9 @@ public class myListings extends AppCompatActivity {
         myList.setText("My Listings");
 
         BottomNavigationView navbar = findViewById(R.id.navbar);
+        Menu menu = navbar.getMenu();
+        MenuItem menuItem = menu.getItem(1);
+        menuItem.setChecked(true);
 
         navbar.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -36,7 +40,7 @@ public class myListings extends AppCompatActivity {
                     case R.id.my_listings:
                         break;
                     case R.id.listings:
-                        Intent viewListings = new Intent(myListings.this, ViewListings.class);
+                        Intent viewListings = new Intent(myListings.this, MainActivity.class);
                         startActivity(viewListings);
                         break;
                     case R.id.notifications:

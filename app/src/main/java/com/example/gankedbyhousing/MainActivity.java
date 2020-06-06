@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -36,11 +37,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     private FirebaseAuth mAuth;
-    private Button editProfile;
-
-    BottomNavigationView navbar;
-
-
     String userID;
 
     @Override
@@ -48,22 +44,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        editProfile = findViewById(R.id.editProfile);
-
-        editProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent toProfile = new Intent(MainActivity.this, ProfileActivity.class);
-                startActivity(toProfile);
-            }
-        });
-
 
         mAuth = FirebaseAuth.getInstance();
         userID = mAuth.getCurrentUser().getUid();
 
+        BottomNavigationView navbar;
 
         navbar = findViewById(R.id.navbar);
+        Menu menu = navbar.getMenu();
+        MenuItem menuItem = menu.getItem(0);
+        menuItem.setChecked(true);
 
         navbar.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -78,8 +68,6 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(myListings);
                         break;
                     case R.id.listings:
-                        Intent viewListings = new Intent(MainActivity.this, ViewListings.class);
-                        startActivity(viewListings);
                         break;
                     case R.id.notifications:
                         Intent toNotifications = new Intent(MainActivity.this, notificationsActivity.class);
