@@ -77,13 +77,24 @@ public class ProfileActivity extends AppCompatActivity{
 
 
         //Restore profile picture, if there is any
-        StorageReference profRef = mStorageRef.child("profile.jpg" + userID);
+
+        StorageReference profRef = mStorageRef.child("profile.png" + userID);
+
         profRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
                 Picasso.get().load(uri).into(profPic);
             }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Picasso.get().load(R.drawable.profile).into(profPic);
+            }
         });
+
+
+
+
 
 
 
@@ -94,12 +105,13 @@ public class ProfileActivity extends AppCompatActivity{
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         if(documentSnapshot.exists()){
-                            String mName = documentSnapshot.getString("name");
+                            String mFirstName = documentSnapshot.getString("first name");
+                            String mLastName = documentSnapshot.getString("last name");
                             String mPhone = documentSnapshot.getString("phone");
                             String mEmail = documentSnapshot.getString("email");
                             String mLocation = documentSnapshot.getString("location");
 
-                            profName.setText(mName);
+                            profName.setText(mFirstName + " " + mLastName);
                             email.setText(mEmail);
                             location.setText(mLocation);
                             phone.setText(mPhone);
@@ -196,8 +208,6 @@ public class ProfileActivity extends AppCompatActivity{
 
 
 
-
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @androidx.annotation.Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -215,7 +225,7 @@ public class ProfileActivity extends AppCompatActivity{
     public void uploadImageToFirebase(Uri imageUri){
         //upload image to firebase storage
 
-        StorageReference fileRef = mStorageRef.child("profile.jpg" + userID);
+        StorageReference fileRef = mStorageRef.child("profile.png" + userID);
         fileRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
