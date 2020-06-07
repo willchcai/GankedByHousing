@@ -10,6 +10,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".ViewListingsActivity"></activity>
+        <activity android:name=".updatePhoneActivity"></activity>
+        <activity android:name=".updateLocationActivity" />
+        <activity android:name=".updatePassActivity" />
+        <activity android:name=".SettingsActivity" />
+        <activity android:name=".ProfileActivity" />
         <activity android:name=".SignUpActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".LoginActivity">
