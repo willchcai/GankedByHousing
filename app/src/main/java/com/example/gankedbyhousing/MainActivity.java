@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private Button editProfile;
+    private Button viewListings;
 
 
     String userID;
@@ -42,6 +43,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        viewListings = findViewById(R.id.viewListings);
+
+        viewListings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent toViewListingsActivity = new Intent(MainActivity.this, ViewListingsActivity.class);
+                startActivity(toViewListingsActivity);
+            }
+        });
 
         editProfile = findViewById(R.id.editProfile);
 
