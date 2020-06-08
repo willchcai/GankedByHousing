@@ -21,6 +21,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -30,6 +31,10 @@ import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 
+import org.w3c.dom.Document;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -91,10 +96,6 @@ public class ProfileActivity extends AppCompatActivity{
                 Picasso.get().load(R.drawable.profile).into(profPic);
             }
         });
-
-
-
-
 
 
 
