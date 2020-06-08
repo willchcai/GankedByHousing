@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.yuyakaido.android.cardstackview.CardStackLayoutManager;
 import com.yuyakaido.android.cardstackview.CardStackListener;
@@ -112,17 +111,17 @@ public class ViewListingsActivity extends AppCompatActivity {
 
     private List<Listing> addList() {
         List<Listing> items = new ArrayList<>();
-        items.add(new Listing(R.drawable.sample1, "Two Bed, Two Bath", "$2400", "San Francisco, CA"));
-        items.add(new Listing(R.drawable.sample2, "Three Floor Penthouse", "$2200", "Santa Barbara, CA"));
-        items.add(new Listing(R.drawable.sample3, "Chinatown Single Room", "$2700", "New York City, NY"));
-        items.add(new Listing(R.drawable.sample4, "House In The Projects", "$1900", "Seattle, WA"));
-        items.add(new Listing(R.drawable.sample5, "Trash", "$2500", "Atlanta, GA"));
+        items.add(new Listing(R.drawable.sample1, "Two Bed, Two Bath", "$2400", "San Francisco, CA", "pkCk7uQ5MObdFaQTyX7G"));
+        items.add(new Listing(R.drawable.sample2, "Three Floor Penthouse", "$2200", "Santa Barbara, CA", "asdf"));
+/*        items.add(new Listing(R.drawable.sample3, "Chinatown Single Room", "$2700", "New York City, NY", documentID));
+        items.add(new Listing(R.drawable.sample4, "House In The Projects", "$1900", "Seattle, WA", documentID));
+        items.add(new Listing(R.drawable.sample5, "Trash", "$2500", "Atlanta, GA", documentID));
 
-        items.add(new Listing(R.drawable.sample1, "Markonah", "$1500", "Sacramento, CA"));
-        items.add(new Listing(R.drawable.sample2, "Marpuah", "$3200", "Los Angeles, CA"));
-        items.add(new Listing(R.drawable.sample3, "Sukijah", "$7200", "Carson City, NV"));
-        items.add(new Listing(R.drawable.sample4, "Markobar", "$420", "Reno, NV"));
-        items.add(new Listing(R.drawable.sample5, "Marmut", "$2550", "Salem, OR"));
+        items.add(new Listing(R.drawable.sample1, "Markonah", "$1500", "Sacramento, CA", documentID));
+        items.add(new Listing(R.drawable.sample2, "Marpuah", "$3200", "Los Angeles, CA", documentID));
+        items.add(new Listing(R.drawable.sample3, "Sukijah", "$7200", "Carson City, NV", documentID));
+        items.add(new Listing(R.drawable.sample4, "Markobar", "$420", "Reno, NV", documentID));
+        items.add(new Listing(R.drawable.sample5, "Marmut", "$2550", "Salem, OR", documentID));*/
         return items;
     }
 }
