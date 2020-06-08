@@ -4,7 +4,7 @@
     <item
         android:id="@+id/listings"
         android:icon="@drawable/ic_home_black_24dp"
-        android:title="View Listings" />
+        android:title="Home" />
 
     <item
         android:id="@+id/my_listings"
@@ -17,12 +17,12 @@
         android:title="Profile" />
 
     <item
-        android:id="@+id/notifications"
-        android:icon="@drawable/ic_notifications_black_24dp"
-        android:title="Notifications" />
+        android:id="@+id/view_listings"
+        android:icon="@drawable/ic_remove_red_eye_black_24dp"
+        android:title="View Listings" />
 
     <item
-        android:id="@+id/upload"
+        android:id="@+id/make_listings"
         android:icon="@drawable/ic_file_upload_black_24dp"
         android:title="Upload Listing" />
 </menu>

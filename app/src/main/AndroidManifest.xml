@@ -9,15 +9,24 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ViewListingsActivity"></activity>
-        <activity android:name=".updatePhoneActivity"></activity>
-        <activity android:name=".updateLocationActivity" />
-        <activity android:name=".updatePassActivity" />
-        <activity android:name=".SettingsActivity" />
-        <activity android:name=".ProfileActivity" />
-        <activity android:name=".SignUpActivity" />
-        <activity android:name=".MainActivity" />
-        <activity android:name=".LoginActivity">
+        <activity android:name=".myListings"
+            android:screenOrientation="nosensor"/>
+        <activity android:name=".ViewListingsActivity"
+            android:screenOrientation="nosensor"/>
+        <activity android:name=".MakeListings"
+            android:screenOrientation="nosensor"/>
+        <activity android:name=".updatePhoneActivity"
+            android:screenOrientation="nosensor"/>
+        <activity android:name=".updateLocationActivity"
+            android:screenOrientation="nosensor"/>
+        <activity android:name=".ProfileActivity"
+            android:screenOrientation="nosensor"/>
+        <activity android:name=".SignUpActivity"
+            android:screenOrientation="nosensor"/>
+        <activity android:name=".MainActivity"
+            android:screenOrientation="nosensor"/>
+        <activity android:name=".LoginActivity"
+            android:screenOrientation="nosensor">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
