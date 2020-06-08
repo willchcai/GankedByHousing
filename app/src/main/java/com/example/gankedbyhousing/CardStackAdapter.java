@@ -1,11 +1,17 @@
 package com.example.gankedbyhousing;
 
+import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -51,11 +57,26 @@ public class CardStackAdapter extends RecyclerView.Adapter<CardStackAdapter.View
         }
 
         void setData(Listing data) {
-            Picasso.get()
+            StorageReference mStorageRef = FirebaseStorage.getInstance().getReference();
+            FirebaseAuth mAuth = FirebaseAuth.getInstance();
+            String userID = mAuth.getCurrentUser().getUid();
+
+            StorageReference profRef = mStorageRef.child("listingImage.jpg"+data.getListingID()+".jpg");
+            Log.d("CardStackAdapter", "value of userID" + data.getListingID());
+
+            profRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    Log.d("CardStackAdapter", "onSuccessListener triggered");
+
+                    Picasso.get().load(uri).fit().centerCrop().into(image);
+                }
+            });
+/*            Picasso.get()
                     .load(data.getImage())
                     .fit()
                     .centerCrop()
-                    .into(image);
+                    .into(image);*/
             title.setText(data.getTitle());
             price.setText("Price: "+data.getPrice());
             location.setText(data.getLocation());
