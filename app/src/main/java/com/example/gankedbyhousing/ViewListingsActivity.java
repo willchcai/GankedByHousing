@@ -14,7 +14,14 @@ import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.yuyakaido.android.cardstackview.CardStackLayoutManager;
 import com.yuyakaido.android.cardstackview.CardStackListener;
 import com.yuyakaido.android.cardstackview.CardStackView;
@@ -24,12 +31,15 @@ import com.yuyakaido.android.cardstackview.SwipeableMethod;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class ViewListingsActivity extends AppCompatActivity {
 
     private static final String TAG = "ViewListingsActivity";
     private CardStackLayoutManager manager;
     private CardStackAdapter adapter;
+    FirebaseFirestore fStore;
+    List<Listing> items;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +52,6 @@ public class ViewListingsActivity extends AppCompatActivity {
         Menu menu = navbar.getMenu();
         MenuItem menuItem = menu.getItem(3);
         menuItem.setChecked(true);
-
         navbar.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -134,7 +143,18 @@ public class ViewListingsActivity extends AppCompatActivity {
         manager.setCanScrollHorizontal(true);
         manager.setSwipeableMethod(SwipeableMethod.Manual);
         manager.setOverlayInterpolator(new LinearInterpolator());
-        adapter = new CardStackAdapter(addList());
+        items = new ArrayList<>();
+        fStore = FirebaseFirestore.getInstance();
+        readData(new FireStoreCallback() {
+            @Override
+            public void onCallback(List<Listing> items) {
+                Log.d(TAG,"During onCallback call");
+                Log.d(TAG,"items" + items);
+                adapter.notifyDataSetChanged();
+            }
+        });
+        adapter = new CardStackAdapter(items);
+
         cardStackView.setLayoutManager(manager);
         cardStackView.setAdapter(adapter);
         cardStackView.setItemAnimator(new DefaultItemAnimator());
@@ -143,17 +163,73 @@ public class ViewListingsActivity extends AppCompatActivity {
 
     private void paginate() {
         List<Listing> old = adapter.getItems();
-        List<Listing> baru = new ArrayList<>(addList());
+        List<Listing> baru = new ArrayList<>(getListOfListings());
         CardStackCallback callback = new CardStackCallback(old, baru);
         DiffUtil.DiffResult hasil = DiffUtil.calculateDiff(callback);
         adapter.setItems(baru);
         hasil.dispatchUpdatesTo(adapter);
     }
 
-    private List<Listing> addList() {
-        List<Listing> items = new ArrayList<>();
-        items.add(new Listing(R.drawable.sample1, "Two Bed, Two Bath", "$2400", "San Francisco, CA", "pkCk7uQ5MObdFaQTyX7G"));
-        items.add(new Listing(R.drawable.sample2, "Three Floor Penthouse", "$2200", "Santa Barbara, CA", "asdf"));
+    public static void getAllFromFireStore(OnCompleteListener<QuerySnapshot> listener) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("Listings").get().addOnCompleteListener(listener);
+    }
+
+    private List<Listing> getListOfListings() {
+
+        fStore = FirebaseFirestore.getInstance();;
+/*
+        CollectionReference docRef = fStore.collection("Listings");
+*/
+        items = new ArrayList<>();
+        readData(new FireStoreCallback() {
+            @Override
+            public void onCallback(List<Listing> items) {
+                Log.d(TAG,"During onCallback call");
+                Log.d(TAG,"items" + items);
+            }
+        });
+        Log.d(TAG,"After readData call");
+        Log.d(TAG,"items" + items);
+
+
+/*        fStore.collection("Listings")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(TAG, document.getId() + " => " + document.getData());
+                                Map<String, Object> docObj = document.getData();
+                                items.add(new Listing(R.drawable.sample1, docObj.get("title").toString(),docObj.get("price").toString(), docObj.get("city") + " " + docObj.get("state"), document.getId()));
+                            }
+                            Log.d(TAG, "items: " + items);
+
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });*/
+        return items;
+
+/*        Task<QuerySnapshot> task = fStore.collection("Listings")
+                .get();
+
+        if (task.isSuccessful()) {
+            for (QueryDocumentSnapshot document : task.getResult()) {
+                Log.d(TAG, document.getId() + " => " + document.getData());
+                Map<String, Object> docObj = document.getData();
+                items.add(new Listing(R.drawable.sample1, docObj.get("title").toString(), docObj.get("price").toString(), docObj.get("city") + " " + docObj.get("state"), document.getId()));
+            }
+            Log.d(TAG, "items: " + items);
+            return items;
+        } else {
+            Log.d(TAG, "Error getting documents: ", task.getException());
+            return items;
+        }*/
+
+
 /*        items.add(new Listing(R.drawable.sample3, "Chinatown Single Room", "$2700", "New York City, NY", documentID));
         items.add(new Listing(R.drawable.sample4, "House In The Projects", "$1900", "Seattle, WA", documentID));
         items.add(new Listing(R.drawable.sample5, "Trash", "$2500", "Atlanta, GA", documentID));
@@ -163,6 +239,35 @@ public class ViewListingsActivity extends AppCompatActivity {
         items.add(new Listing(R.drawable.sample3, "Sukijah", "$7200", "Carson City, NV", documentID));
         items.add(new Listing(R.drawable.sample4, "Markobar", "$420", "Reno, NV", documentID));
         items.add(new Listing(R.drawable.sample5, "Marmut", "$2550", "Salem, OR", documentID));*/
+/*
         return items;
+*/
     }
+
+    private void readData(final FireStoreCallback fireStoreCallBack){
+        fStore.collection("Listings")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(TAG, document.getId() + " => " + document.getData());
+                                Map<String, Object> docObj = document.getData();
+                                items.add(new Listing(R.drawable.sample1, docObj.get("title").toString(),docObj.get("price").toString(), docObj.get("city") + " " + docObj.get("state"), document.getId()));
+                            }
+                            //Log.d(TAG, "items: " + items);
+                            fireStoreCallBack.onCallback(items);
+
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+    }
+
+    private interface FireStoreCallback {
+        void onCallback(List<Listing> items);
+    }
+
 }

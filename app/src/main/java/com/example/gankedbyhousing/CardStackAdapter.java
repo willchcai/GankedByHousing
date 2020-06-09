@@ -61,7 +61,7 @@ public class CardStackAdapter extends RecyclerView.Adapter<CardStackAdapter.View
             FirebaseAuth mAuth = FirebaseAuth.getInstance();
             String userID = mAuth.getCurrentUser().getUid();
 
-            StorageReference profRef = mStorageRef.child("listingImage.jpg"+data.getListingID()+".jpg");
+            StorageReference profRef = mStorageRef.child("image"+data.getListingID());
             Log.d("CardStackAdapter", "value of userID" + data.getListingID());
 
             profRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
