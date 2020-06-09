@@ -27,7 +27,8 @@ public class SignUpActivity extends AppCompatActivity {
     private TextView email;
     private TextView password;
     private TextView toLogin;
-    private TextView name;
+    private TextView firstName;
+    private TextView lastName;
     private TextView phoneNum;
     private TextView location;
     private Button register;
@@ -45,7 +46,8 @@ public class SignUpActivity extends AppCompatActivity {
         password = findViewById(R.id.SUpassText);
         toLogin = findViewById(R.id.toSignIn);
         register = findViewById(R.id.regButton);
-        name = findViewById(R.id.SUnameText);
+        firstName = findViewById(R.id.firstName);
+        lastName = findViewById(R.id.lastName);
         phoneNum = findViewById(R.id.SUphoneText);
         location = findViewById(R.id.SUlocation);
 
@@ -67,7 +69,8 @@ public class SignUpActivity extends AppCompatActivity {
             public void onClick(View v) {
                 final String mEmail = email.getText().toString();
                 final String mPass = password.getText().toString();
-                final String mName = name.getText().toString();
+                final String mFirstName = firstName.getText().toString();
+                final String mLastName = lastName.getText().toString();
                 final String mPhoneNum = phoneNum.getText().toString();
                 final String mLocation = location.getText().toString();
 
@@ -95,7 +98,8 @@ public class SignUpActivity extends AppCompatActivity {
                             //create collection called Users, make document that saves the UserIDs inside the collection.
                             DocumentReference docRef = fStore.collection("Users").document(userID);
                             Map<String, Object> user = new HashMap<>();
-                            user.put("name", mName);
+                            user.put("first name", mFirstName);
+                            user.put("last name", mLastName);
                             user.put("email", mEmail);
                             user.put("phone", mPhoneNum);
                             user.put("location", mLocation);

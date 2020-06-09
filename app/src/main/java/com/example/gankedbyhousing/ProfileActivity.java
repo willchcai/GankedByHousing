@@ -133,12 +133,13 @@ public class ProfileActivity extends AppCompatActivity{
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         if(documentSnapshot.exists()){
-                            String mName = documentSnapshot.getString("name");
+                            String mLastName = documentSnapshot.getString("last name");
+                            String mFirstName = documentSnapshot.getString("first name");
                             String mPhone = documentSnapshot.getString("phone");
                             String mEmail = documentSnapshot.getString("email");
                             String mLocation = documentSnapshot.getString("location");
 
-                            profName.setText(mName);
+                            profName.setText(mFirstName + " " + mLastName);
                             email.setText(mEmail);
                             location.setText(mLocation);
                             phone.setText(mPhone);
