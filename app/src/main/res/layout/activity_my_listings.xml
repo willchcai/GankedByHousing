@@ -31,13 +31,33 @@ xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
 tools:context=".myListings">
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#3886D7"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Dark" />
 
-<ListView
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="61dp"
+        android:text="My Listings"
+        android:textStyle="bold"
+        android:textColor="@android:color/white"
+        android:textSize="26sp"
+        android:gravity="center"
+        />
+
+    <ListView
     android:id="@+id/cardList"
     android:layout_width="match_parent"
     android:layout_marginTop="?attr/actionBarSize"
     android:layout_marginBottom="96dp"
-    android:layout_height="match_parent"/>
+    android:layout_height="match_parent">
+
+    </ListView>
 
 <include
     layout="@layout/item_bottom_navigation"

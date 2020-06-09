@@ -156,5 +156,15 @@ public class myListings extends AppCompatActivity {
                 return false;
             }
         });
+
+        cardList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                final int posID = (int) id;
+                Intent ViewSingleListingActivityIntent = new Intent(myListings.this, ViewSingleListingActivity.class);
+                ViewSingleListingActivityIntent.putExtra("Listing Document ID", documentIdArray.get(posID));
+                startActivity(ViewSingleListingActivityIntent);
+            }
+        });
     }
 }

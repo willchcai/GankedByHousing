@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -7,7 +8,7 @@
     <RelativeLayout
         android:id="@+id/relTop"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="262dp"
         android:background="@drawable/gradient"
         android:paddingBottom="15dp">
 
@@ -17,12 +18,13 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true">
 
-            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/profPic"
                 android:layout_width="110dp"
                 android:layout_height="110dp"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="40dp"
                 android:src="@drawable/blankuser"
-                android:layout_marginTop="40sp"
                 app:civ_border_color="#00000000"
                 app:civ_border_width="2dp" />
 
@@ -51,17 +53,24 @@
         />
 
 
-
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/userInfo"
-        android:layout_below="@id/relTop"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="15sp"
-        android:layout_marginTop="15sp"
-        android:layout_marginRight="20sp">
+        android:layout_height="316dp"
+        android:layout_above="@+id/navbar"
+        android:layout_below="@id/relTop"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginBottom="1dp">
 
 
         <TextView
@@ -69,26 +78,24 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="left"
+            android:layout_marginLeft="10sp"
+            android:layout_marginTop="10sp"
+            android:layout_marginRight="10sp"
             android:text="Email"
             android:textSize="15sp"
-            android:textStyle="bold|italic"
-            android:layout_marginTop="10sp"
-            android:layout_marginLeft="10sp"
-            android:layout_marginRight="10sp">
-        </TextView>
+            android:textStyle="bold|italic"></TextView>
 
         <TextView
             android:id="@+id/UserEmail"
-            android:layout_below="@id/EmailText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="left"
-            android:textSize="20sp"
-            android:text="bob1@gmail.com"
-            android:layout_marginTop="10sp"
+            android:layout_below="@id/EmailText"
             android:layout_marginLeft="10sp"
-            android:layout_marginRight="10sp">
-        </TextView>
+            android:layout_marginTop="1dp"
+            android:layout_marginRight="10sp"
+            android:gravity="left"
+            android:text="bob1@gmail.com"
+            android:textSize="20sp"></TextView>
 
         <TextView
             android:id="@+id/PhoneText"
@@ -96,92 +103,100 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/UserEmail"
             android:layout_gravity="left"
+            android:layout_marginLeft="10sp"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="10sp"
             android:text="Phone"
             android:textSize="15sp"
-            android:textStyle="bold|italic"
-            android:layout_marginTop="20sp"
-            android:layout_marginLeft="10sp"
-            android:layout_marginRight="10sp">
-        </TextView>
+            android:textStyle="bold|italic"></TextView>
 
         <TextView
             android:id="@+id/UserPhone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/PhoneText"
-            android:textSize="20sp"
-            android:text="123123123"
-            android:layout_marginTop="10sp"
             android:layout_marginLeft="10sp"
-            android:layout_marginRight="10sp">
-        </TextView>
+            android:layout_marginTop="10sp"
+            android:layout_marginRight="10sp"
+            android:text="123123123"
+            android:textSize="20sp"></TextView>
 
         <ImageView
             android:id="@+id/editPhone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/PhoneText"
-            android:src="@drawable/ic_edit_black_24dp"
-            android:layout_alignParentRight="true">
-        </ImageView>
+            android:layout_alignParentRight="true"
+            android:src="@drawable/ic_edit_black_24dp"></ImageView>
 
         <TextView
             android:id="@+id/LocationText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/UserPhone"
+            android:layout_marginLeft="10sp"
+            android:layout_marginTop="4dp"
+            android:layout_marginRight="10sp"
             android:text="Location"
             android:textSize="15sp"
-            android:textStyle="bold|italic"
-            android:layout_marginTop="20sp"
-            android:layout_marginLeft="10sp"
-            android:layout_marginRight="10sp">
-        </TextView>
+            android:textStyle="bold|italic"></TextView>
 
         <TextView
             android:id="@+id/UserLocation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/LocationText"
-            android:textSize="20sp"
-            android:text="San Francisco"
-            android:layout_marginTop="10sp"
             android:layout_marginLeft="10sp"
-            android:layout_marginRight="10sp">
-        </TextView>
+            android:layout_marginTop="10sp"
+            android:layout_marginRight="10sp"
+            android:text="San Francisco"
+            android:textSize="20sp"></TextView>
 
         <ImageView
             android:id="@+id/editLocation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/LocationText"
-            android:src="@drawable/ic_edit_black_24dp"
-            android:layout_alignParentRight="true">
-        </ImageView>
-
-
+            android:layout_alignParentRight="true"
+            android:src="@drawable/ic_edit_black_24dp"></ImageView>
 
 
         <Button
             android:id="@+id/logout"
-            android:layout_width="match_parent"
+            android:layout_width="359dp"
             android:layout_height="wrap_content"
-            android:layout_marginRight="100dp"
-            android:layout_marginLeft="100dp"
-            android:layout_marginTop="25sp"
-            android:layout_marginBottom="30sp"
             android:layout_below="@id/UserLocation"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="61dp"
+            android:layout_marginLeft="61dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="60dp"
+            android:layout_marginRight="60dp"
+            android:layout_marginBottom="22dp"
             android:gravity="center"
             android:text="Sign out" />
 
     </RelativeLayout>
+
     <include
-        layout="@layout/item_bottom_navigation"
         android:id="@+id/navbar"
+        layout="@layout/item_bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:layout_below="@+id/userInfo"/>
+        android:layout_marginStart="0dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginBottom="0dp" />
 
 
 </RelativeLayout>
