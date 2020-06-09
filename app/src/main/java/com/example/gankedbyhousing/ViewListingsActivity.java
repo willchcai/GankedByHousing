@@ -17,8 +17,6 @@ import android.widget.TextView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -254,7 +252,7 @@ public class ViewListingsActivity extends AppCompatActivity {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d(TAG, document.getId() + " => " + document.getData());
                                 Map<String, Object> docObj = document.getData();
-                                items.add(new Listing(R.drawable.sample1, docObj.get("title").toString(),docObj.get("price").toString(), docObj.get("city") + " " + docObj.get("state"), document.getId()));
+                                items.add(new Listing(R.drawable.sample1, docObj.get("title").toString(),docObj.get("price").toString(), "Location: " + docObj.get("city") + " " + docObj.get("state"), document.getId(), "Phone Number: " +docObj.get("phone number"), "Email: " + docObj.get("email")));
                             }
                             //Log.d(TAG, "items: " + items);
                             fireStoreCallBack.onCallback(items);

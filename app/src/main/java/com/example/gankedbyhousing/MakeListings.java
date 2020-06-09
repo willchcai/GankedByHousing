@@ -41,7 +41,7 @@ public class MakeListings extends AppCompatActivity {
     private String listKey;
 
     private ImageView listPic;
-    private EditText listName, price, state, city;
+    private EditText listName, price, state, city, email, phoneNumber;
     private Button confirmButton;
     private Uri currentImageUri;
 
@@ -62,6 +62,9 @@ public class MakeListings extends AppCompatActivity {
         state = findViewById(R.id.state);
         city = findViewById(R.id.city);
         listName = findViewById(R.id.listName);
+        email = findViewById(R.id.email);
+        phoneNumber = findViewById(R.id.phoneNumberEdit);
+
         confirmButton = findViewById(R.id.confirmButton);
 
 
@@ -81,6 +84,8 @@ public class MakeListings extends AppCompatActivity {
                 String mState = state.getText().toString();
                 String mCity = city.getText().toString();
                 String mListName = listName.getText().toString();
+                String mEmail = email.getText().toString();
+                String mPhoneNumber = phoneNumber.getText().toString();
 
                 Map<String, Object> listingData = new HashMap<>();
                 listingData.put("title", mListName);
@@ -88,6 +93,8 @@ public class MakeListings extends AppCompatActivity {
                 listingData.put("city", mCity);
                 listingData.put("state", mState);
                 listingData.put("uid", userID);
+                listingData.put("phone number", mPhoneNumber);
+                listingData.put("email", mEmail);
 
 
 
