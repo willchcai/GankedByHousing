@@ -1,15 +1,20 @@
 package com.example.gankedbyhousing;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DiffUtil;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.TextView;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.yuyakaido.android.cardstackview.CardStackLayoutManager;
 import com.yuyakaido.android.cardstackview.CardStackListener;
 import com.yuyakaido.android.cardstackview.CardStackView;
@@ -30,6 +35,42 @@ public class ViewListingsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_listings);
+
+        BottomNavigationView navbar;
+
+        navbar = findViewById(R.id.navbar);
+        Menu menu = navbar.getMenu();
+        MenuItem menuItem = menu.getItem(3);
+        menuItem.setChecked(true);
+
+        navbar.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                switch (menuItem.getItemId()){
+                    case R.id.nav_profile:
+                        Intent toProfile = new Intent(ViewListingsActivity.this, ProfileActivity.class);
+                        startActivity(toProfile);
+                        break;
+                    case R.id.my_listings:
+                        Intent myListings = new Intent(ViewListingsActivity.this, myListings.class);
+                        startActivity(myListings);
+                        break;
+                    case R.id.listings:
+                        Intent toMainActivity = new Intent(ViewListingsActivity.this, MainActivity.class);
+                        startActivity(toMainActivity);
+                        break;
+                    case R.id.view_listings:
+                        break;
+                    case R.id.make_listings:
+                        Intent toMakeListings = new Intent(ViewListingsActivity.this, MakeListings.class);
+                        startActivity(toMakeListings);
+                        break;
+
+                }
+
+                return true;
+            }
+        });
 
         CardStackView cardStackView = findViewById(R.id.card_stack_view);
         manager = new CardStackLayoutManager(this, new CardStackListener() {

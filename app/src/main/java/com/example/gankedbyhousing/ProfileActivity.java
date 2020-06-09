@@ -2,7 +2,7 @@ package com.example.gankedbyhousing;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
+
 
 import android.content.Intent;
 
@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -35,8 +36,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileActivity extends AppCompatActivity{
 
-    private ImageView homeBtn;
-    private ImageView editEmail, editLocation, editPhone;
+    private ImageView editLocation, editPhone;
 
     private TextView email, phone, location, profName, profLocation;
 
@@ -56,9 +56,44 @@ public class ProfileActivity extends AppCompatActivity{
         setContentView(R.layout.activity_profile);
 
 
+        BottomNavigationView navbar;
+
+        navbar = findViewById(R.id.navbar);
+        Menu menu = navbar.getMenu();
+        MenuItem menuItem = menu.getItem(2);
+        menuItem.setChecked(true);
+
+        navbar.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                switch (menuItem.getItemId()){
+                    case R.id.nav_profile:
+                        break;
+                    case R.id.my_listings:
+                        Intent myListings = new Intent(ProfileActivity.this, myListings.class);
+                        startActivity(myListings);
+                        break;
+                    case R.id.listings:
+                        Intent toMainActivity = new Intent(ProfileActivity.this, MainActivity.class);
+                        startActivity(toMainActivity);
+                        break;
+                    case R.id.view_listings:
+                        Intent toViewListings = new Intent(ProfileActivity.this, ViewListingsActivity.class);
+                        startActivity(toViewListings);
+                        break;
+                    case R.id.make_listings:
+                        Intent toMakeListings = new Intent(ProfileActivity.this, MakeListings.class);
+                        startActivity(toMakeListings);
+                        break;
+
+                }
+
+                return true;
+            }
+        });
 
 
-        homeBtn = findViewById(R.id.home);
+
         profName = findViewById(R.id.profName);
         profPic = findViewById(R.id.profPic);
         editLocation = findViewById(R.id.editLocation);
@@ -98,12 +133,13 @@ public class ProfileActivity extends AppCompatActivity{
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         if(documentSnapshot.exists()){
-                            String mName = documentSnapshot.getString("name");
+                            String mLastName = documentSnapshot.getString("last name");
+                            String mFirstName = documentSnapshot.getString("first name");
                             String mPhone = documentSnapshot.getString("phone");
                             String mEmail = documentSnapshot.getString("email");
                             String mLocation = documentSnapshot.getString("location");
 
-                            profName.setText(mName);
+                            profName.setText(mFirstName + " " + mLastName);
                             email.setText(mEmail);
                             location.setText(mLocation);
                             phone.setText(mPhone);
@@ -118,16 +154,6 @@ public class ProfileActivity extends AppCompatActivity{
 
 
         //OnClickListeners
-
-        homeBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent toMainActivity = new Intent(ProfileActivity.this, MainActivity.class);
-                startActivity(toMainActivity);
-            }
-        });
-
-
 
         editLocation.setOnClickListener(new View.OnClickListener() {
             @Override
