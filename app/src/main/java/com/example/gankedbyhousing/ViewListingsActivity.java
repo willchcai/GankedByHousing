@@ -89,18 +89,6 @@ public class ViewListingsActivity extends AppCompatActivity {
             @Override
             public void onCardSwiped(Direction direction) {
                 Log.d(TAG, "onCardSwiped: p=" + manager.getTopPosition() + " d=" + direction);
-/*                if (direction == Direction.Right){
-                    Toast.makeText(ViewListingsActivity.this, "Direction Right", Toast.LENGTH_SHORT).show();
-                }
-                if (direction == Direction.Top){
-                    Toast.makeText(ViewListingsActivity.this, "Direction Top", Toast.LENGTH_SHORT).show();
-                }
-                if (direction == Direction.Left){
-                    Toast.makeText(ViewListingsActivity.this, "Direction Left", Toast.LENGTH_SHORT).show();
-                }
-                if (direction == Direction.Bottom){
-                    Toast.makeText(ViewListingsActivity.this, "Direction Bottom", Toast.LENGTH_SHORT).show();
-                }*/
 
                 // Paginating
                 if (manager.getTopPosition() == adapter.getItemCount() - 5){
@@ -176,9 +164,6 @@ public class ViewListingsActivity extends AppCompatActivity {
     private List<Listing> getListOfListings() {
 
         fStore = FirebaseFirestore.getInstance();;
-/*
-        CollectionReference docRef = fStore.collection("Listings");
-*/
         items = new ArrayList<>();
         readData(new FireStoreCallback() {
             @Override
@@ -190,56 +175,8 @@ public class ViewListingsActivity extends AppCompatActivity {
         Log.d(TAG,"After readData call");
         Log.d(TAG,"items" + items);
 
-
-/*        fStore.collection("Listings")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d(TAG, document.getId() + " => " + document.getData());
-                                Map<String, Object> docObj = document.getData();
-                                items.add(new Listing(R.drawable.sample1, docObj.get("title").toString(),docObj.get("price").toString(), docObj.get("city") + " " + docObj.get("state"), document.getId()));
-                            }
-                            Log.d(TAG, "items: " + items);
-
-                        } else {
-                            Log.d(TAG, "Error getting documents: ", task.getException());
-                        }
-                    }
-                });*/
         return items;
 
-/*        Task<QuerySnapshot> task = fStore.collection("Listings")
-                .get();
-
-        if (task.isSuccessful()) {
-            for (QueryDocumentSnapshot document : task.getResult()) {
-                Log.d(TAG, document.getId() + " => " + document.getData());
-                Map<String, Object> docObj = document.getData();
-                items.add(new Listing(R.drawable.sample1, docObj.get("title").toString(), docObj.get("price").toString(), docObj.get("city") + " " + docObj.get("state"), document.getId()));
-            }
-            Log.d(TAG, "items: " + items);
-            return items;
-        } else {
-            Log.d(TAG, "Error getting documents: ", task.getException());
-            return items;
-        }*/
-
-
-/*        items.add(new Listing(R.drawable.sample3, "Chinatown Single Room", "$2700", "New York City, NY", documentID));
-        items.add(new Listing(R.drawable.sample4, "House In The Projects", "$1900", "Seattle, WA", documentID));
-        items.add(new Listing(R.drawable.sample5, "Trash", "$2500", "Atlanta, GA", documentID));
-
-        items.add(new Listing(R.drawable.sample1, "Markonah", "$1500", "Sacramento, CA", documentID));
-        items.add(new Listing(R.drawable.sample2, "Marpuah", "$3200", "Los Angeles, CA", documentID));
-        items.add(new Listing(R.drawable.sample3, "Sukijah", "$7200", "Carson City, NV", documentID));
-        items.add(new Listing(R.drawable.sample4, "Markobar", "$420", "Reno, NV", documentID));
-        items.add(new Listing(R.drawable.sample5, "Marmut", "$2550", "Salem, OR", documentID));*/
-/*
-        return items;
-*/
     }
 
     private void readData(final FireStoreCallback fireStoreCallBack){
