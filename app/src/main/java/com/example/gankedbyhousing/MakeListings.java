@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,6 +21,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -39,8 +41,9 @@ public class MakeListings extends AppCompatActivity {
     private String listKey;
 
     private ImageView listPic;
-    private EditText listName, price, state, city;
+    private EditText listName, price, state, city, email, phoneNumber;
     private Button confirmButton;
+    private Uri currentImageUri;
 
 
 
@@ -59,6 +62,9 @@ public class MakeListings extends AppCompatActivity {
         state = findViewById(R.id.state);
         city = findViewById(R.id.city);
         listName = findViewById(R.id.listName);
+        email = findViewById(R.id.email);
+        phoneNumber = findViewById(R.id.phoneNumberEdit);
+
         confirmButton = findViewById(R.id.confirmButton);
 
 
@@ -74,10 +80,12 @@ public class MakeListings extends AppCompatActivity {
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String mPrice = price.getText().toString();
+                String mPrice = "$"+price.getText().toString();
                 String mState = state.getText().toString();
                 String mCity = city.getText().toString();
                 String mListName = listName.getText().toString();
+                String mEmail = email.getText().toString();
+                String mPhoneNumber = phoneNumber.getText().toString();
 
                 Map<String, Object> listingData = new HashMap<>();
                 listingData.put("title", mListName);
@@ -85,12 +93,21 @@ public class MakeListings extends AppCompatActivity {
                 listingData.put("city", mCity);
                 listingData.put("state", mState);
                 listingData.put("uid", userID);
+                listingData.put("phone number", mPhoneNumber);
+                listingData.put("email", mEmail);
 
 
 
                 //make new listing document in fireStore collections
                 CollectionReference fileRef = fStore.collection("Listings");
-                fileRef.add(listingData);
+                fileRef.add(listingData).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.d("MakeListings.java", "DocumentSnapshot written with ID: " + documentReference.getId());
+                        uploadImageToFirebase(currentImageUri, documentReference.getId());
+
+                    }
+                });
 
 
             }
@@ -144,18 +161,17 @@ public class MakeListings extends AppCompatActivity {
         if(requestCode == 69 && resultCode == RESULT_OK){
             Uri imageUri = data.getData();
             Picasso.get().load(imageUri).into(listPic);
-
-            uploadImageToFirebase(imageUri);
+            currentImageUri = imageUri;
 
         }
 
     }
 
 
-    public void uploadImageToFirebase(Uri imageUri){
+    public void uploadImageToFirebase(Uri imageUri, String documentID){
         //upload image to firebase storage
 
-        StorageReference fileRef = fStorage.child("Listing Images/my first listing.png");
+        StorageReference fileRef = fStorage.child("image"+documentID);
         fileRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
